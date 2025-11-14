@@ -6,6 +6,27 @@
     <title>My Book Library</title>
 </head>
 <body>
-    <h1>Book Note</h1>
+    <h1>My Book Note</h1>
+    <a href="/new">Add a New Book</a> <hr>
+    
+    <div class="book-list">
+        <% if (locals.books && books.length > 0) { %>
+            <% books.forEach(book => { %>
+                <div class="book-card">
+                    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="Cover of <%= book.title %>">
+
+                    <h2><%= book.title %></h2>
+                    <p>By: <%= book.author %></p>
+                    <p>Rating: <%= book.rating %>/5</p>
+                    <p>Read on: <%= new Date(book.date_read).toLocaleDateString()%></p>
+                    <blockquote>
+                        <p><%= book.notes %></p>
+                    </blockquote>
+                </div>    
+            <% }); %>
+        <% } else { %>
+            <p>No books added yet. <a href="/new">Add one!</a></p>
+        <% } %>
+    </div>
 </body>
 </html>

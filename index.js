@@ -25,8 +25,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //find the reason for this line
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-    res.render("index");
+app.get("/", async (req, res) => {
+    try {
+        const result = await db.query("SELECT * FROM books");
+
+        const books = result.rows;
+        res.render("index", {books: books});
+    }catch(err){
+        console.error("Error fetching books:", err);
+    }
 });
 
 app.get("/new", (req, res) => {
