@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new book</title>
+</head>
+<body>
+    <h1>Add a New Book Note</h1>
+    <form action="/add" method="POST">
+        <label>Title:</label>
+        <input type="text" name="title" required>
+
+        <label>Author:</label>
+        <input type="text" name="author">
+
+        <label>ISBN:</label>
+        <input type="text" name="isbn" placeholder="For the cover image">
+
+        <label>Rating (1-5):</label>
+        <input type="number" name="rating" min="1" max="5">
+
+        <label>Date Read:</label>
+        <input type="date" name="date_read">
+
+        <label>My Notes:</label>
+        <textarea name="notes" rows="5"></textarea>
+
+        <button type="submit">Save Note</button>
+    </form>
+    
+</body>
+</html>
