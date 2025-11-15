@@ -22,7 +22,14 @@
                     <blockquote>
                         <p><%= book.notes %></p>
                     </blockquote>
-                </div>    
+                </div>
+
+                <a href="/edit/<%= book.id %>">Edit</a>
+                
+                <form action="/delete" method="POST">
+                    <input type="hidden" name="bookID" value="<%= book.id %>">
+                    <button type="submit">Delete</button>
+                </form>
             <% }); %>
         <% } else { %>
             <p>No books added yet. <a href="/new">Add one!</a></p>
