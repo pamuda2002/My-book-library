@@ -1,2 +1,4 @@
 .env
 node_modules
+public/styles.css
+public/temp.css

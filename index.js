@@ -26,9 +26,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 app.get("/", async (req, res) => {
-    try {
-        const result = await db.query("SELECT * FROM books");
+    const sort = req.query.sort;
+    let query = "SELECT * FROM books";
 
+    if (sort === "rating"){
+        query += " ORDER BY rating DESC";
+    } else if ( sort === "recency"){
+        query += " ORDER BY date_read DESC";
+    }
+
+    try {
+        const result = await db.query(query);
         const books = result.rows;
         res.render("index", { books: books });
     } catch (err) {

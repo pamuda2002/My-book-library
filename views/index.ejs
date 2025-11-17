@@ -1,39 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Book Library</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
     <h1>My Book Note</h1>
-    <a href="/new">Add a New Book</a> <hr>
-    
+    <div class="action-links">
+        <a href="/?sort=rating">Sort by Rating</a>
+        <a href="/?sort=recency">Sort by Date Read</a>
+        <a href="/">Clear Sort</a>
+        <a href="/new">Add a New Book</a>
+    </div>
+    <hr>
+
     <div class="book-list">
-        <% if (locals.books && books.length > 0) { %>
-            <% books.forEach(book => { %>
+        <% if (locals.books && books.length> 0) { %>
+            <% books.forEach(book=> { %>
+
                 <div class="book-card">
-                    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="Cover of <%= book.title %>">
 
-                    <h2><%= book.title %></h2>
-                    <p>By: <%= book.author %></p>
-                    <p>Rating: <%= book.rating %>/5</p>
-                    <p>Read on: <%= new Date(book.date_read).toLocaleDateString()%></p>
-                    <blockquote>
-                        <p><%= book.notes %></p>
-                    </blockquote>
+                    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg"
+                        alt="Cover of <%= book.title %>">
+
+                    <h3>
+                        <%= book.title %>
+                    </h3>
+                    <p class="book-author">By: <%= book.author %>
+                    </p>
+
+                    <div class="book-rating">
+                        <% for (let i=0; i < book.rating; i++) { %>
+                            <span class="star-icon">&#9733;</span>
+                            <% } %>
+                                <% for (let i=book.rating; i < 5; i++) { %>
+                                    <span class="star-icon empty-star">&#9733;</span>
+                                    <% } %>
+                    </div>
+
+                    <p class="book-date">Read on: <%= new Date(book.date_read).toLocaleDateString('en-US', {
+                            year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+                    </p>
+
+                    <p class="book-notes">
+                        <%= book.notes %>
+                    </p>
+
+                    <div class="card-footer"> <a class="edit-button" href="/edit/<%= book.id %>">Edit</a>
+
+                        <form action="/delete" method="POST">
+                            <input type="hidden" name="bookId" value="<%= book.id %>">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </div>
+
                 </div>
-
-                <a href="/edit/<%= book.id %>">Edit</a>
-                
-                <form action="/delete" method="POST">
-                    <input type="hidden" name="bookID" value="<%= book.id %>">
-                    <button type="submit">Delete</button>
-                </form>
-            <% }); %>
-        <% } else { %>
-            <p>No books added yet. <a href="/new">Add one!</a></p>
-        <% } %>
+                <% }) %>
+                    <% } else { %>
+                        <p class="no-books-message">No books added yet. <a href="/new">Add one!</a></p>
+                        <% } %>
     </div>
 </body>
+
 </html>
