@@ -19,10 +19,9 @@ db.connect()
     .catch((err) => console.error("Database connection error:", err));;
 
 
-// find static files(CSS, Image)
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
-//find the reason for this line
+
 app.set("view engine", "ejs");
 
 app.get("/", async (req, res) => {

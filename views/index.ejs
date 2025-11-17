@@ -9,47 +9,53 @@
 </head>
 
 <body>
-    <h1>My Book Note</h1>
-    <div class="action-links">
-        <a href="/?sort=rating">Sort by Rating</a>
-        <a href="/?sort=recency">Sort by Date Read</a>
-        <a href="/">Clear Sort</a>
-        <a href="/new">Add a New Book</a>
-    </div>
-    <hr>
+    <header class="bookshelf-header">
+        <nav class="nav-container">
+            <h1 class="header-title">My Bookshelf</h1>
+
+            <div class="header-controls">
+                <div class="sort-buttons">
+                    <a href="/?sort=rating">Rating</a>
+                    <a href="/?sort=recency">Recency</a>
+                    <a href="/">Clear</a>
+                </div>
+                <a href="/new" class="add-book-btn">
+                    <span>+ Add Book</span>
+                </a>
+            </div>
+        </nav>
+    </header>
 
     <div class="book-list">
         <% if (locals.books && books.length> 0) { %>
             <% books.forEach(book=> { %>
-
                 <div class="book-card">
-
                     <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg"
                         alt="Cover of <%= book.title %>">
+                    <div class="book-discription">
+                        <h3>
+                            <%= book.title %>
+                        </h3>
+                        <p class="book-author">By: <%= book.author %>
+                        </p>
 
-                    <h3>
-                        <%= book.title %>
-                    </h3>
-                    <p class="book-author">By: <%= book.author %>
-                    </p>
-
-                    <div class="book-rating">
-                        <% for (let i=0; i < book.rating; i++) { %>
-                            <span class="star-icon">&#9733;</span>
+                        <div class="book-rating">
+                            <% for (let i=0; i < book.rating; i++) { %>
+                                <span class="star-icon">&#9733;</span>
                             <% } %>
-                                <% for (let i=book.rating; i < 5; i++) { %>
-                                    <span class="star-icon empty-star">&#9733;</span>
-                                    <% } %>
+                            <% for (let i=book.rating; i < 5; i++) { %>
+                                <span class="star-icon empty-star">&#9733;</span>
+                            <% } %>
+                        </div>
+
+                        <p class="book-date">Read on: <%= new Date(book.date_read).toLocaleDateString('en-US', {
+                                year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+                        </p>
+
+                        <p class="book-notes">
+                            <%= book.notes %>
+                        </p>
                     </div>
-
-                    <p class="book-date">Read on: <%= new Date(book.date_read).toLocaleDateString('en-US', {
-                            year: 'numeric' , month: 'long' , day: 'numeric' }) %>
-                    </p>
-
-                    <p class="book-notes">
-                        <%= book.notes %>
-                    </p>
-
                     <div class="card-footer"> <a class="edit-button" href="/edit/<%= book.id %>">Edit</a>
 
                         <form action="/delete" method="POST">
@@ -57,13 +63,35 @@
                             <button type="submit" class="delete-button">Delete</button>
                         </form>
                     </div>
-
                 </div>
-                <% }) %>
-                    <% } else { %>
-                        <p class="no-books-message">No books added yet. <a href="/new">Add one!</a></p>
-                        <% } %>
+            <% }) %>
+        <% } else { %>
+            <p class="no-books-message">No books added yet. <a href="/new">Add one!</a></p>
+            <% } %>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sortParam = urlParams.get('sort');
+            const sortButtons = document.querySelectorAll('.sort-buttons a');
+
+            if (sortParam) {
+                sortButtons.forEach(button => {
+                    const buttonSort = new URL(button.href).searchParams.get('sort');
+                    if (buttonSort === sortParam) {
+                        button.classList.add('active');
+                    }
+                });
+            } else {
+                // If there is no sort parameter, the 'Clear' button is active
+                sortButtons.forEach(button => {
+                    if (button.getAttribute('href') === '/') {
+                        button.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
