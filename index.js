@@ -99,7 +99,7 @@ app.post("/update", async (req, res) => {
 });
 
 app.post("/delete", async (req, res) => {
-    const id = req.body.bookID;
+    const id = req.body.bookId;
     try {
         await db.query("DELETE FROM books WHERE id = $1", [id]);
         res.redirect("/");
@@ -108,6 +108,10 @@ app.post("/delete", async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Sever running on http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        console.log(`Sever running on http://localhost:${port}`);
+    });
+}
+
+export default app;
